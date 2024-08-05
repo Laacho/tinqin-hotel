@@ -1,0 +1,7 @@
+.flattened-pom.xml
+/api/target/
+/core/target/
+/domain/target/
+/persistence/target/
+/rest/target/
+/.idea/
