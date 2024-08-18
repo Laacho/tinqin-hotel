@@ -5,7 +5,6 @@ import com.tinqinacademy.hotel.api.models.base.OperationInput;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -15,6 +14,6 @@ import java.util.UUID;
 @Builder
 @ToString
 public class DeleteRoomInput implements OperationInput {
-    @NotNull
+    @NotNull(message = "room cannot be null")
     private UUID roomId;
 }

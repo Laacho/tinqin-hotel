@@ -13,6 +13,6 @@ import java.util.UUID;
 @ToString
 @Builder
 public class GetRoomByIDInput implements OperationInput {
-    @NotNull
+    @NotNull(message = "room id cannot be null")
     private UUID roomID;
 }

@@ -2,6 +2,7 @@ package com.tinqinacademy.hotel.api.models.operations.registerVisitor;
 
 import com.tinqinacademy.hotel.api.models.base.OperationInput;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,11 +17,13 @@ import java.util.List;
 public class RegisterVisitorInput implements OperationInput {
 
 
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be a valid date")
     private LocalDate startDate;
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be a valid date")
     private LocalDate endDate;
 
+    @NotNull(message = "room number must not be null")
+    private String roomNumber;
     private List<DataForEachVisitor> dataForVisitors;
 
 }

@@ -14,6 +14,6 @@ import java.util.UUID;
 @ToString
 @Builder
 public class UnbookRoomInput implements OperationInput {
-    @NotNull
+    @NotNull(message = "booking id cannot be null")
     private UUID bookingRoomId;
 }

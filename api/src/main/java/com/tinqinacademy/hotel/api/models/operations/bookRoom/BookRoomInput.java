@@ -20,21 +20,22 @@ import java.util.UUID;
 public class BookRoomInput implements OperationInput {
     @Hidden
     private UUID roomId;
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be a valid date")
     private LocalDate startDate;
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be a valid date")
     private LocalDate endDate;
     @Size(min=1,max = 10)
-    @NotNull
+    @NotNull(message = "first name cannot be null")
     private String firstName;
     @Size(min=1,max = 10)
-    @NotNull
+    @NotNull(message = "last name cannot be null")
     private String lastName;
     @Size(min=1,max = 10)
-    @NotNull
+    @NotNull(message = "phone number cannot be null")
     private String phoneNumber;
-    @Past
+    @Past(message = "must a past date")
     private LocalDate birthdate;
     @Size(min = 5,max = 30)
+    @NotNull(message ="email cannot be null")
     private String email;
 }

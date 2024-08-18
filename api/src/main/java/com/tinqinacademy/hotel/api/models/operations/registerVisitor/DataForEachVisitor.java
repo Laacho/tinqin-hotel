@@ -16,25 +16,29 @@ import java.time.LocalDate;
 @ToString
 public class DataForEachVisitor {
     @Size(min = 1,max = 15)
-    @NotNull
+    @NotNull(message = "cannot be null")
     private String firstName;
+
     @Size(min = 1,max = 15)
-    @NotNull
+    @NotNull(message = "cannot be null")
     private String lastName;
+
     @Size(min = 1,max = 10)
-    @NotNull
+    @NotNull(message = "cannot be null")
     private String phoneNumber;
+
     @Size(min = 1,max = 10)
-    @NotNull
+    @NotNull(message = "cannot be null")
     private String idCardNumber;
-    @FutureOrPresent
+
+    @FutureOrPresent(message = "must be a valid date")
     private LocalDate idCardValidity;
     @Size(min = 1,max = 15)
-    @NotNull
+    @NotNull(message = "issue authority cannot be null")
     private String idCardIssueAuthority;
-    @Past
+    @Past(message = "must be a past date")
     private LocalDate idCardIssueDate;
 
-    @Past
+    @Past(message = "birthdate must be a past date")
     private LocalDate birthdate;
 }

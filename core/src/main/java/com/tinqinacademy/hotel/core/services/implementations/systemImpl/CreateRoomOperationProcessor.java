@@ -1,4 +1,4 @@
-package com.tinqinacademy.hotel.core.services.implementations;
+package com.tinqinacademy.hotel.core.services.implementations.systemImpl;
 
 import com.tinqinacademy.hotel.api.models.exceptions.customException.InvalidBedTypeException;
 import com.tinqinacademy.hotel.api.models.exceptions.errorHandler.ErrorHandler;
@@ -6,6 +6,7 @@ import com.tinqinacademy.hotel.api.models.exceptions.errorWrapper.ErrorWrapper;
 import com.tinqinacademy.hotel.api.models.operations.createRoom.CreateRoomInput;
 import com.tinqinacademy.hotel.api.models.operations.createRoom.CreateRoomOperation;
 import com.tinqinacademy.hotel.api.models.operations.createRoom.CreateRoomOutput;
+import com.tinqinacademy.hotel.core.services.implementations.BaseOperationProcessor;
 import com.tinqinacademy.hotel.persistence.entities.BedEntity;
 import com.tinqinacademy.hotel.persistence.entities.Room;
 import com.tinqinacademy.hotel.persistence.enums.BathRoomPrototype;
@@ -14,7 +15,7 @@ import com.tinqinacademy.hotel.persistence.repository.interfaces.BedRepository;
 import com.tinqinacademy.hotel.persistence.repository.interfaces.RoomRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +24,20 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public class CreateRoomOperationProcessor implements CreateRoomOperation {
+public class CreateRoomOperationProcessor extends BaseOperationProcessor implements CreateRoomOperation {
     private final BedRepository bedRepository;
     private final RoomRepository roomRepository;
-    private final ErrorHandler errorHandler;
+
+    public CreateRoomOperationProcessor(Validator validator, ErrorHandler errorHandler, BedRepository bedRepository, RoomRepository roomRepository) {
+        super(validator, errorHandler);
+        this.bedRepository = bedRepository;
+        this.roomRepository = roomRepository;
+    }
 
     @Override
     public Either<ErrorWrapper, CreateRoomOutput> process(CreateRoomInput input) {
         log.info("Start createRoom input: {}", input);
-        return Try.of(() -> {
+        return validateInput(input).flatMap(validatedInput -> Try.of(() -> {
                     List<BedEntity> result = convertFromStringToBedEntity(input);
                     Room room = roomBuilder(input, result);
                     saveRoom(room);
@@ -42,10 +47,10 @@ public class CreateRoomOperationProcessor implements CreateRoomOperation {
                     return output;
                 })
                 .toEither()
-                .mapLeft(errorHandler::handleError);
+                .mapLeft(errorHandler::handleError));
     }
 
-    private  CreateRoomOutput outputBuilder(Room room) {
+    private CreateRoomOutput outputBuilder(Room room) {
         return CreateRoomOutput.builder()
                 .id(room.getId())
                 .build();

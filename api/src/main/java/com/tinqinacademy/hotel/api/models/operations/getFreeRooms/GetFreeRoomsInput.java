@@ -1,7 +1,6 @@
 package com.tinqinacademy.hotel.api.models.operations.getFreeRooms;
 
 import com.tinqinacademy.hotel.api.models.base.OperationInput;
-import com.tinqinacademy.hotel.api.models.enums.Bed;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -17,11 +16,11 @@ import java.util.List;
 @Builder
 @ToString
 public class GetFreeRoomsInput implements OperationInput {
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be valid date")
     private LocalDate startDate;
-    @FutureOrPresent
+    @FutureOrPresent(message = "must be valid date")
     private LocalDate endDate;
     private List<String> beds;
-    @NotBlank
+    @NotBlank(message = "cannot be null/blank")
     private String bathRoomType;
 }

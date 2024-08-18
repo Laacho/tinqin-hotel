@@ -1,4 +1,4 @@
-package com.tinqinacademy.hotel.core.services.implementations;
+package com.tinqinacademy.hotel.core.services.implementations.systemImpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,6 +11,7 @@ import com.tinqinacademy.hotel.api.models.exceptions.errorWrapper.ErrorWrapper;
 import com.tinqinacademy.hotel.api.models.operations.partialUpdateRoom.PartialUpdateRoomInput;
 import com.tinqinacademy.hotel.api.models.operations.partialUpdateRoom.PartialUpdateRoomOperation;
 import com.tinqinacademy.hotel.api.models.operations.partialUpdateRoom.PartialUpdateRoomOutput;
+import com.tinqinacademy.hotel.core.services.implementations.BaseOperationProcessor;
 import com.tinqinacademy.hotel.persistence.entities.BedEntity;
 import com.tinqinacademy.hotel.persistence.entities.Room;
 import com.tinqinacademy.hotel.persistence.enums.BedSize;
@@ -18,7 +19,7 @@ import com.tinqinacademy.hotel.persistence.repository.interfaces.BedRepository;
 import com.tinqinacademy.hotel.persistence.repository.interfaces.RoomRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -29,21 +30,27 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public class PartialUpdateRoomOperationProcessor implements PartialUpdateRoomOperation {
+public class PartialUpdateRoomOperationProcessor extends BaseOperationProcessor implements PartialUpdateRoomOperation {
     private final RoomRepository roomRepository;
     private final ObjectMapper objectMapper;
-    private final ErrorHandler errorHandler;
     private final ConversionService conversionService;
     private final BedRepository bedRepository;
+
+    public PartialUpdateRoomOperationProcessor(Validator validator, ErrorHandler errorHandler, RoomRepository roomRepository, ObjectMapper objectMapper, ConversionService conversionService, BedRepository bedRepository) {
+        super(validator, errorHandler);
+        this.roomRepository = roomRepository;
+        this.objectMapper = objectMapper;
+        this.conversionService = conversionService;
+        this.bedRepository = bedRepository;
+    }
 
     @Override
     public Either<ErrorWrapper, PartialUpdateRoomOutput> process(PartialUpdateRoomInput input) {
         log.info("Start partialUpdateRoom input: {}", input);
 
-        return Try.of(() -> {
-                            Room room = roomRepository.findRoomById(input.getId()).orElseThrow(() -> new InvalidRoomByIdExceptions("Invalid room"));
-
+        return validateInput(input).flatMap(validatedInput -> Try.of(() -> {
+                            Room room = roomRepository.findRoomById(input.getId())
+                                    .orElseThrow(() -> new InvalidRoomByIdExceptions("Invalid room"));
                             Room converted = conversionService.convert(input, Room.class);
                             if (input.getBeds() != null && !input.getBeds().isEmpty()) {
                                 List<BedEntity> result = new ArrayList<>();
@@ -77,7 +84,7 @@ public class PartialUpdateRoomOperationProcessor implements PartialUpdateRoomOpe
 
                         }
                 ).toEither()
-                .mapLeft(errorHandler::handleError);
+                .mapLeft(errorHandler::handleError));
     }
 
     private List<BedEntity> convert(PartialUpdateRoomInput input) {

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "user")
 @Builder
 @Entity
 @Table(name = "reservations")
@@ -27,7 +27,7 @@ public class Reservation {
     @Column(name = "price")
     private BigDecimal price;
 
-    @OneToOne(targetEntity = Room.class)
+    @ManyToOne(targetEntity = Room.class)
     private Room room;
 
     @ManyToOne

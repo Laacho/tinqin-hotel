@@ -7,8 +7,16 @@
         <artifactId>hotel</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>api</artifactId>
+    <artifactId>restexport</artifactId>
     <version>${revision}</version>
-    <name>api</name>
-    <description>Api Module</description>
+    <name>restexport</name>
+    <description>Rest Export Module</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tinqinacademy.hotel</groupId>
+            <artifactId>core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 </project>

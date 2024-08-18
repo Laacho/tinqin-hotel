@@ -1,10 +1,11 @@
-package com.tinqinacademy.hotel.core.services.implementations;
+package com.tinqinacademy.hotel.core.services.implementations.hotelImpl;
 
 import com.tinqinacademy.hotel.api.models.exceptions.errorHandler.ErrorHandler;
 import com.tinqinacademy.hotel.api.models.exceptions.errorWrapper.ErrorWrapper;
 import com.tinqinacademy.hotel.api.models.operations.getFreeRooms.GetFreeRoomsInput;
 import com.tinqinacademy.hotel.api.models.operations.getFreeRooms.GetFreeRoomsOperation;
 import com.tinqinacademy.hotel.api.models.operations.getFreeRooms.GetFreeRoomsOutput;
+import com.tinqinacademy.hotel.core.services.implementations.BaseOperationProcessor;
 import com.tinqinacademy.hotel.persistence.entities.BedEntity;
 import com.tinqinacademy.hotel.persistence.entities.Reservation;
 import com.tinqinacademy.hotel.persistence.entities.Room;
@@ -14,7 +15,7 @@ import com.tinqinacademy.hotel.persistence.repository.interfaces.ReservationRepo
 import com.tinqinacademy.hotel.persistence.repository.interfaces.RoomRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +25,21 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public class GetFreeRoomsOperationProcessor implements GetFreeRoomsOperation {
+public class GetFreeRoomsOperationProcessor extends BaseOperationProcessor implements GetFreeRoomsOperation {
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
-    private final ErrorHandler errorHandler;
+
+    public GetFreeRoomsOperationProcessor(Validator validator, ErrorHandler errorHandler, RoomRepository roomRepository, ReservationRepository reservationRepository) {
+        super(validator, errorHandler);
+        this.roomRepository = roomRepository;
+        this.reservationRepository = reservationRepository;
+    }
 
     @Override
     public Either<ErrorWrapper, GetFreeRoomsOutput> process(GetFreeRoomsInput input) {
 
         log.info("Start getFreeRooms input: {}", input);
-        return Try.of(() -> {
+        return validateInput(input).flatMap(validatedInput -> Try.of(() -> {
                             List<Room> roomsByMe = getFinalRooms(input);
                             List<UUID> result = new ArrayList<>();
                             for (Room room : roomsByMe) {
@@ -61,7 +66,7 @@ public class GetFreeRoomsOperationProcessor implements GetFreeRoomsOperation {
                         }
                 )
                 .toEither()
-                .mapLeft(errorHandler::handleError);
+                .mapLeft(errorHandler::handleError));
 
 
     }

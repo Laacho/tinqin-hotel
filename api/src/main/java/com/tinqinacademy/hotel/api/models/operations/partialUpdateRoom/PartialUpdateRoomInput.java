@@ -21,13 +21,11 @@ public class PartialUpdateRoomInput implements OperationInput {
     private UUID id;
     private List<String> beds;
     @Size(min = 1, max = 15)
-    @NotNull
     private String bathroomType;
-    @PositiveOrZero
+    @PositiveOrZero(message = "floor must be equal or greater to zero")
     @Max(10)
     private Integer floor;
     @Size(min = 1, max = 15)
-    @NotNull
     private String roomNumber;
     @PositiveOrZero
     private BigDecimal price;

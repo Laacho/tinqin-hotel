@@ -15,32 +15,34 @@ import java.time.LocalDate;
 @ToString
 @Builder
 public class SystemReportInput implements OperationInput {
-    @FutureOrPresent(message = "Must be valid start date")
+   @FutureOrPresent(message = "Must be valid start date")
     private LocalDate startDate;
     @FutureOrPresent(message = "Must be a valid end date")
     private LocalDate endDate;
     @Size(min=1,max =15 )
-    @NotNull
+    @NotNull(message = "first name cannot be null")
     private String firstName;
     @Size(min=1,max =15 )
-    @NotNull
+    @NotNull(message = "last name cannot be null")
     private String lastName;
     @Size(min=1,max =15 )
-    @NotNull
+    @NotNull(message = "phone number cannot be null")
     private String phoneNumber;
 
     @Size(min = 1,max = 20)
     private String idCardNumber;
-    @FutureOrPresent(message = "Must be a valid id date")
-    private LocalDate idCardValidity;
+    @NotNull(message = "id card validity cannot be null")
+    private String idCardValidity;
     @Size(min = 1,max = 100)
-    @NotNull
+    @NotNull(message = "issue authority cannot be null")
     private String idCardIssueAuthority;
-    @FutureOrPresent(message = "Must be a valid id date")
-    @NotNull
-    private LocalDate idCardIssueDate;
+    @NotNull(message = "issue date cannot be null")
+    private String idCardIssueDate;
     @Size(min = 1,max=50)
-    @NotNull
+    @NotNull(message = "room number cannot be null")
     private String roomNumber;
+
+    @NotNull(message = "birthdate cannot be null")
+    private String birthdate;
 
 }
