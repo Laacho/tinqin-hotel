@@ -14,7 +14,7 @@ import com.tinqinacademy.hotel.api.models.operations.getRoomByID.GetRoomByIdOper
 import com.tinqinacademy.hotel.api.models.operations.unbookRoom.UnbookRoomInput;
 import com.tinqinacademy.hotel.api.models.operations.unbookRoom.UnbookRoomOperation;
 import com.tinqinacademy.hotel.api.models.operations.unbookRoom.UnbookRoomOutput;
-import com.tinqinacademy.hotel.core.services.paths.URLPaths;
+import com.tinqinacademy.hotel.core.services.paths.HotelURLPaths;
 import com.tinqinacademy.hotel.rest.controllers.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.vavr.control.Either;
@@ -44,7 +44,7 @@ public class HotelController extends BaseController {
     }
 
 
-    @PostMapping(URLPaths.ROOM_ID)
+    @PostMapping(HotelURLPaths.POST_ROOM_ID)
     @Operation(summary = "books a rooms DONE")
     public ResponseEntity<?> bookRoom( @RequestBody BookRoomInput input,
                                       @PathVariable UUID roomId) {
@@ -63,7 +63,7 @@ public class HotelController extends BaseController {
         return handleResponse(result);
     }
 
-    @GetMapping(URLPaths.ROOMS)
+    @GetMapping(HotelURLPaths.GET_ROOMS)
     @Operation(summary = "checks if a room is free DONE")
     public ResponseEntity<?> checkIfRoomIsFree(@RequestParam LocalDate startDate,
                                                @RequestParam LocalDate endDate,
@@ -80,7 +80,7 @@ public class HotelController extends BaseController {
         return handleResponse(result);
     }
 
-    @GetMapping(URLPaths.ROOM_ID)
+    @GetMapping(HotelURLPaths.GET_ROOM_ID)
     @Operation(summary = "returns basic info for a room DONE")
     public ResponseEntity<?> getRoomsById(@PathVariable UUID roomId) {
         GetRoomByIDInput input = GetRoomByIDInput.builder()
@@ -91,7 +91,7 @@ public class HotelController extends BaseController {
     }
 
 
-    @DeleteMapping(URLPaths.BOOKING_ID)
+    @DeleteMapping(HotelURLPaths.DELETE_BOOKING_ID)
     @Operation(summary = "unbooks a room DONE")
     public ResponseEntity<?> unbookRoom(@PathVariable("bookingId") UUID bookingId) {
         UnbookRoomInput build = UnbookRoomInput.builder()

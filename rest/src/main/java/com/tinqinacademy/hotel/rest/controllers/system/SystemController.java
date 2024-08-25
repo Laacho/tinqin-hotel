@@ -19,7 +19,7 @@ import com.tinqinacademy.hotel.api.models.operations.systemRepost.SystemRepostOu
 import com.tinqinacademy.hotel.api.models.operations.updateRoom.UpdateRoomInput;
 import com.tinqinacademy.hotel.api.models.operations.updateRoom.UpdateRoomOperation;
 import com.tinqinacademy.hotel.api.models.operations.updateRoom.UpdateRoomOutput;
-import com.tinqinacademy.hotel.core.services.paths.URLPaths;
+import com.tinqinacademy.hotel.core.services.paths.HotelURLPaths;
 import com.tinqinacademy.hotel.rest.controllers.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.vavr.control.Either;
@@ -49,13 +49,13 @@ public class SystemController extends BaseController{
     }
 
 
-    @PostMapping(URLPaths.REGISTER)
+    @PostMapping(HotelURLPaths.POST_REGISTER)
     @Operation(summary = "registers a visitor DONE")
     public ResponseEntity<?> registerVisitor( @RequestBody RegisterVisitorInput input) {
         Either<ErrorWrapper, RegisterVisitorOutput> result = registerVisitorOperation.process(input);
         return handleResponse(result);
     }
-    @GetMapping(URLPaths.REGISTER)
+    @GetMapping(HotelURLPaths.GET_REGISTER)
     @Operation(summary ="gives a report on a specific info" )
     public ResponseEntity<?> reportInfo( @RequestParam LocalDate startDate,
                                          @RequestParam LocalDate endDate,
@@ -83,14 +83,14 @@ public class SystemController extends BaseController{
         return handleResponse(result);
     }
 
-    @PostMapping(URLPaths.SYSTEM_ROOM)
+    @PostMapping(HotelURLPaths.POST_SYSTEM_ROOM)
     @Operation(summary = "Adds a room DONE")
     public ResponseEntity<?> createRoom( @RequestBody CreateRoomInput input) {
         Either<ErrorWrapper, CreateRoomOutput> result = createRoomOperation.process(input);
         return handleResponse(result);
     }
 
-    @PutMapping(URLPaths.SYSTEM_ROOM_ID)
+    @PutMapping(HotelURLPaths.PUT_SYSTEM_ROOM_ID)
     @Operation(summary = "updates room DONE")
     public ResponseEntity<?> updateRoom( @RequestBody UpdateRoomInput input, @PathVariable UUID roomId) {
         UpdateRoomInput result = UpdateRoomInput.builder()
@@ -105,7 +105,7 @@ public class SystemController extends BaseController{
         return handleResponse(process);
     }
 
-    @PatchMapping(value = URLPaths.SYSTEM_ROOM_ID, consumes = "application/json-patch+json")
+    @PatchMapping(value = HotelURLPaths.PATCH_SYSTEM_ROOM_ID, consumes = "application/json-patch+json")
     @Operation(summary = "partial updated the room DONE")
     public ResponseEntity<?> partialUpdateRoom(@RequestBody PartialUpdateRoomInput input,
                                                @PathVariable String roomId) {
@@ -122,7 +122,7 @@ public class SystemController extends BaseController{
     }
 
 
-    @DeleteMapping(URLPaths.SYSTEM_ROOM_ID)
+    @DeleteMapping(HotelURLPaths.DELETE_SYSTEM_ROOM_ID)
     @Operation(summary = "deletes a room DONE")
     public ResponseEntity<?> deleteRoom( @PathVariable UUID roomId) {
         DeleteRoomInput input = DeleteRoomInput.builder()
