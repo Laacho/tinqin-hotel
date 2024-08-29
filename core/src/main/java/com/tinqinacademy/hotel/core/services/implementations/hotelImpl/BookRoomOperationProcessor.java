@@ -41,8 +41,7 @@ public class BookRoomOperationProcessor extends BaseOperationProcessor implement
 
         log.info("Start bookRoom input: {}", input);
         return validateInput(input).flatMap(validatedInput -> Try.of(() -> {
-                            User user = buildUser(input);
-                            //todo check if in buildReservation it saves with the correct user
+                         User user = buildUser(input);
                             userRepository.save(user);
                             Room result = getRoomById(input);
                             BigDecimal finalPrice = calculateFinalPrice(input, result);

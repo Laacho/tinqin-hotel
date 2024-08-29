@@ -58,17 +58,20 @@ public interface RestExportHotel {
 
 
     //@GetMapping(URLPaths.REGISTER)
-    @RequestLine("GET /api/system/register?startDate={startDate}&endDate={endDate}&roomNumber={roomNumber}")
+    @RequestLine("GET /api/system/register?startDate={startDate}&endDate={endDate}&roomNumber={roomNumber}" +
+                 "&firstName={firstName}&lastName={lastName}&phoneNumber={phoneNumber}" +
+                 "&idCardNumber={idCardNumber}&idCardValidity={idCardValidity}&" +
+                 "idCardIssueAuthority={idCardIssueAuthority}&idCardIssueDate={idCardIssueDate}")
     SystemRepostOutput reportInfo(       @Param("roomId") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate,
-                                         @Param("roomNumber") String roomNumber);
-//                                         @Param( required = false) String firstName,
-//                                         @Param( required = false) String lastName,
-//                                         @Param( required = false) String phoneNumber,
-//                                         @Param( required = false) String idCardNumber,
-//                                         @Param( required = false) String idCardValidity,
-//                                         @Param( required = false) String idCardIssueAuthority,
-//                                         @Param( required = false) String idCardIssueDate);
+                                         @Param("roomNumber") String roomNumber,
+                                         @Param("firstName") String firstName,
+                                         @Param("lastName") String lastName,
+                                         @Param("phoneNumber") String phoneNumber,
+                                         @Param("idCardNumber") String idCardNumber,
+                                         @Param("idCardValidity") String idCardValidity,
+                                         @Param("idCardIssueAuthority") String idCardIssueAuthority,
+                                         @Param("idCardIssueDate") String idCardIssueDate);
 
 
     //@PutMapping(URLPaths.SYSTEM_ROOM_ID)

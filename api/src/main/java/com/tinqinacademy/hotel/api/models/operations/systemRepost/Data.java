@@ -13,7 +13,6 @@ public class Data {
 
     private String firstName;
     private String lastName;
-
     private String phoneNumber;
     private String idCardNumber;
     private LocalDate idCardValidity;

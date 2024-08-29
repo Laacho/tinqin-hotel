@@ -115,6 +115,8 @@
 			<artifactId>feign-okhttp</artifactId>
 			<version>${feignOKhttp.version}</version>
 		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>

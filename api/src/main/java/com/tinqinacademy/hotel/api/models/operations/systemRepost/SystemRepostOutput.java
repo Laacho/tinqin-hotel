@@ -15,5 +15,5 @@ import java.util.List;
 public class SystemRepostOutput implements OperationOutput {
     private LocalDate startDate;
     private LocalDate endDate;
-    List<Data> data;
+   private List<Data> data;
 }

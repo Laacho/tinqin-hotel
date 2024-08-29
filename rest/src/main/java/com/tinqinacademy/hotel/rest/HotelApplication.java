@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@EnableJdbcRepositories(basePackages = "com.tinqinacademy.hotel.persistence.repository.interfaces")
 @EnableJpaRepositories(basePackages = "com.tinqinacademy.hotel.persistence.repository.interfaces")
 @EntityScan(basePackages = "com.tinqinacademy.hotel.persistence.entities")
-public class HotelApplication {
+//@EnableAspectJAutoProxy
+public class HotelApplication  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HotelApplication.class, args);

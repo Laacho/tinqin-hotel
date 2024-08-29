@@ -5,6 +5,7 @@ import com.tinqinacademy.hotel.persistence.enums.BedSize;
 import com.tinqinacademy.hotel.persistence.repository.interfaces.BedRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
